@@ -11,17 +11,19 @@ const ContextProvider = (props) => {
   const [loading, setLoading] = useState(false);
   const [resultData, setResultData] = useState("");
 
+  console.log(setPrevPrompts);
+
   const onSent = async (prompt) => {
     setResultData("");
     setLoading(true);
     setShowResult(true);
-    let response = "";
+    let response;
     if (prompt !== undefined) {
       response = await runChat(prompt);
       setRecentPrompt(prompt);
     } else {
+      setPrevPrompts((prev) => [input, ...prev]);
       setRecentPrompt(input);
-      setPrevPrompts((prev) => [...prev, input]);
       response = await runChat(input);
     }
 
@@ -57,7 +59,9 @@ const ContextProvider = (props) => {
     recentPrompt,
     setRecentPrompt,
     showResult,
+    setShowResult,
     loading,
+    setLoading,
     resultData,
     input,
     setInput,
